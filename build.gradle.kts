@@ -1,6 +1,7 @@
 plugins {
     id("java")
     id("maven-publish")
+    id("jacoco")
 }
 
 group = "org.thehellnet.ham.repeatercontroller"
@@ -36,5 +37,16 @@ publishing {
         register<MavenPublication>("gpr") {
             from(components["java"])
         }
+    }
+}
+
+tasks.test {
+    finalizedBy(tasks.jacocoTestReport)
+}
+
+tasks.jacocoTestReport {
+    dependsOn(tasks.test)
+    reports {
+        xml.required = true
     }
 }

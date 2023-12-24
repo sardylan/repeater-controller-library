@@ -4,11 +4,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.thehellnet.ham.repeatercontroller.exception.ProtocolException;
 import org.thehellnet.ham.repeatercontroller.exception.SocketClientException;
-import org.thehellnet.ham.repeatercontroller.protocol.Command;
 import org.thehellnet.ham.repeatercontroller.protocol.CommandFactory;
-import org.thehellnet.ham.repeatercontroller.protocol.CommandType;
 import org.thehellnet.ham.repeatercontroller.protocol.ConfigParam;
-import org.thehellnet.ham.repeatercontroller.protocol.impl.*;
+import org.thehellnet.ham.repeatercontroller.protocol.request.*;
+import org.thehellnet.ham.repeatercontroller.protocol.response.*;
 import org.thehellnet.ham.repeatercontroller.socket.SocketClient;
 
 import java.net.InetAddress;
@@ -71,60 +70,60 @@ public class RepeaterControllerClient {
         }
     }
 
-    public PingCommand ping() {
-        PingCommand request = new PingCommand(CommandType.Request);
-        return (PingCommand) sendCommand(request);
+    public PingResponseCommand ping() {
+        PingRequestCommand request = new PingRequestCommand();
+        return (PingResponseCommand) sendCommand(request);
     }
 
-    public ResetCommand reset() {
-        ResetCommand request = new ResetCommand(CommandType.Request);
-        return (ResetCommand) sendCommand(request);
+    public ResetResponseCommand reset() {
+        ResetRequestCommand request = new ResetRequestCommand();
+        return (ResetResponseCommand) sendCommand(request);
     }
 
-    public TelemetryCommand telemetry() {
-        TelemetryCommand request = new TelemetryCommand(CommandType.Request);
-        return (TelemetryCommand) sendCommand(request);
+    public TelemetryResponseCommand telemetry() {
+        TelemetryRequestCommand request = new TelemetryRequestCommand();
+        return (TelemetryResponseCommand) sendCommand(request);
     }
 
-    public RTCReadCommand rtcRead() {
-        RTCReadCommand request = new RTCReadCommand(CommandType.Request);
-        return (RTCReadCommand) sendCommand(request);
+    public RTCReadResponseCommand rtcRead() {
+        RTCReadRequestCommand request = new RTCReadRequestCommand();
+        return (RTCReadResponseCommand) sendCommand(request);
     }
 
-    public RTCSetCommand rtcSet() {
-        RTCSetCommand request = new RTCSetCommand(CommandType.Request);
-        request.setTimestamp(ZonedDateTime.now(ZoneId.of("UTC")));
-        return (RTCSetCommand) sendCommand(request);
+    public RTCSetResponseCommand rtcSet() {
+        RTCSetRequestCommand request = new RTCSetRequestCommand();
+        request.setTimestamp(ZonedDateTime.now(ZoneId.of("UTC")).toLocalDateTime());
+        return (RTCSetResponseCommand) sendCommand(request);
     }
 
-    public ConfigReadCommand configRead(ConfigParam configParam) {
-        ConfigReadCommand request = new ConfigReadCommand(CommandType.Request);
+    public ConfigReadResponseCommand configRead(ConfigParam configParam) {
+        ConfigReadRequestCommand request = new ConfigReadRequestCommand();
         request.setConfigParam(configParam);
-        return (ConfigReadCommand) sendCommand(request);
+        return (ConfigReadResponseCommand) sendCommand(request);
     }
 
-    public ConfigSetCommand configSet(ConfigParam configParam, Object value) {
-        ConfigSetCommand request = new ConfigSetCommand(CommandType.Request);
+    public ConfigSetResponseCommand configSet(ConfigParam configParam, Object value) {
+        ConfigSetRequestCommand request = new ConfigSetRequestCommand();
         request.setConfigParam(configParam);
         request.setValue(value);
-        return (ConfigSetCommand) sendCommand(request);
+        return (ConfigSetResponseCommand) sendCommand(request);
     }
 
-    public OutputReadCommand outputRead(int outputNumber) {
-        OutputReadCommand request = new OutputReadCommand(CommandType.Request);
+    public OutputReadResponseCommand outputRead(int outputNumber) {
+        OutputReadRequestCommand request = new OutputReadRequestCommand();
         request.setOutputNumber(outputNumber);
-        return (OutputReadCommand) sendCommand(request);
+        return (OutputReadResponseCommand) sendCommand(request);
     }
 
-    public OutputSetCommand outputSet(int outputNumber, boolean status) {
-        OutputSetCommand request = new OutputSetCommand(CommandType.Request);
+    public OutputSetResponseCommand outputSet(int outputNumber, boolean status) {
+        OutputSetRequestCommand request = new OutputSetRequestCommand();
         request.setOutputNumber(outputNumber);
         request.setStatus(status);
-        return (OutputSetCommand) sendCommand(request);
+        return (OutputSetResponseCommand) sendCommand(request);
     }
 
-    private Command sendCommand(Command requestCommand) {
-        byte[] requestPayload = CommandFactory.serializePayload(requestCommand);
+    private ResponseCommand sendCommand(RequestCommand requestCommand) {
+        byte[] requestPayload = CommandFactory.serializeRequest(requestCommand);
 
         byte[] responsePayload;
         synchronized (SYNC) {
@@ -135,15 +134,6 @@ public class RepeaterControllerClient {
             responsePayload = socketClient.send(requestPayload);
         }
 
-        Command responseCommand = CommandFactory.parsePayload(responsePayload);
-        if (responseCommand.getCommandByte() != requestCommand.getCommandByte()) {
-            throw new ProtocolException("Invalid response command");
-        }
-
-        if (responseCommand.getCommandType() != CommandType.Response) {
-            throw new ProtocolException("Response is not a response command");
-        }
-
-        return responseCommand;
+        return CommandFactory.parseResponse(requestCommand.getCommandType(), responsePayload);
     }
 }

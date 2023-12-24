@@ -1,61 +1,63 @@
 package org.thehellnet.ham.repeatercontroller.protocol;
 
 import org.thehellnet.ham.repeatercontroller.exception.ProtocolException;
-import org.thehellnet.ham.repeatercontroller.protocol.impl.*;
+import org.thehellnet.ham.repeatercontroller.protocol.request.RequestCommand;
+import org.thehellnet.ham.repeatercontroller.protocol.response.*;
 
 import java.util.Arrays;
 
 public class CommandFactory {
 
-    public static byte[] serializePayload(Command command) {
-        if (command.getCommandType() != CommandType.Request) {
-            throw new ProtocolException("Not a request command");
-        }
-
+    public static byte[] serializeRequest(RequestCommand command) {
         byte[] args = command.serializeArgs();
-        byte cmd = command.getCommandByte().serialize();
 
         byte[] payload = new byte[args.length + 1];
-        payload[0] = cmd;
+        payload[0] = command.getCommandType().serialize();
         System.arraycopy(args, 0, payload, 1, args.length);
-
         return payload;
     }
 
-    public static Command parsePayload(byte[] payload) {
-        byte firstByte = payload[0];
-        byte[] args = Arrays.copyOfRange(payload, 1, payload.length);
+    public static ResponseCommand parseResponse(CommandType commandType, byte[] payload) {
+        ResponseType responseType = ResponseType.parse(payload[0]);
 
-        CommandByte commandByte = CommandByte.parse(firstByte);
-        Command command = getCommand(commandByte);
-        command.parseArgs(args);
-        return command;
-    }
+        ResponseCommand command;
 
-    static Command getCommand(CommandByte commandByte) {
-        switch (commandByte) {
-            case Null:
-                return new NullCommand(CommandType.Response);
+        switch (commandType) {
             case Ping:
-                return new PingCommand(CommandType.Response);
+                command = new PingResponseCommand(responseType);
+                break;
             case Reset:
-                return new ResetCommand(CommandType.Response);
+                command = new ResetResponseCommand(responseType);
+                break;
             case Telemetry:
-                return new TelemetryCommand(CommandType.Response);
+                command = new TelemetryResponseCommand(responseType);
+                break;
             case RTCRead:
-                return new RTCReadCommand(CommandType.Response);
+                command = new RTCReadResponseCommand(responseType);
+                break;
             case RTCSet:
-                return new RTCSetCommand(CommandType.Response);
+                command = new RTCSetResponseCommand(responseType);
+                break;
             case ConfigRead:
-                return new ConfigReadCommand(CommandType.Response);
+                command = new ConfigReadResponseCommand(responseType);
+                break;
             case ConfigSet:
-                return new ConfigSetCommand(CommandType.Response);
+                command = new ConfigSetResponseCommand(responseType);
+                break;
             case OutputRead:
-                return new OutputReadCommand(CommandType.Response);
+                command = new OutputReadResponseCommand(responseType);
+                break;
             case OutputSet:
-                return new OutputSetCommand(CommandType.Response);
+                command = new OutputSetResponseCommand(responseType);
+                break;
+
+            default:
+                throw new ProtocolException("Response not valid");
         }
 
-        throw new ProtocolException("Not implemented");
+        byte[] args = Arrays.copyOfRange(payload, 1, payload.length);
+        command.parseArgs(args);
+
+        return command;
     }
 }

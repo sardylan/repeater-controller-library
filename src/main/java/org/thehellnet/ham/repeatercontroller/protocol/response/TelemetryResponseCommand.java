@@ -4,9 +4,8 @@ import org.thehellnet.ham.repeatercontroller.protocol.CommandType;
 import org.thehellnet.ham.repeatercontroller.protocol.ResponseType;
 import org.thehellnet.ham.repeatercontroller.utility.ByteUtility;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Objects;
@@ -18,6 +17,7 @@ public class TelemetryResponseCommand extends AbstractResponseCommand {
     private float panelCurrent;
     private float batteryVoltage;
     private float batteryChargeCurrent;
+    private boolean globalStatus;
 
     public TelemetryResponseCommand(ResponseType responseType) {
         super(CommandType.Telemetry, responseType);
@@ -43,13 +43,16 @@ public class TelemetryResponseCommand extends AbstractResponseCommand {
         return batteryChargeCurrent;
     }
 
+    public boolean isGlobalStatus() {
+        return globalStatus;
+    }
+
     @Override
     public void parseArgs(byte[] args) {
         byte[] temp;
 
         temp = Arrays.copyOfRange(args, 0, 4);
-        int unixTs = ByteUtility.bytesBEToInt32(temp);
-        timestamp = Instant.ofEpochSecond(unixTs).atZone(ZoneId.of("UTC")).toLocalDateTime();
+        timestamp = ByteUtility.bytesToDateTime(temp);
 
         temp = Arrays.copyOfRange(args, 4, 8);
         panelVoltage = ByteUtility.bytesBEToFloat32(temp);
@@ -62,6 +65,8 @@ public class TelemetryResponseCommand extends AbstractResponseCommand {
 
         temp = Arrays.copyOfRange(args, 16, 20);
         batteryChargeCurrent = ByteUtility.bytesBEToFloat32(temp);
+
+        globalStatus = args[20] > 0;
     }
 
     @Override
@@ -80,9 +85,10 @@ public class TelemetryResponseCommand extends AbstractResponseCommand {
 
     @Override
     public String toString() {
-        return String.format("%s - PV: %.02f - PA: %.02f - BV: %.02f - BA: %.02f",
-                timestamp.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME),
-                panelVoltage, panelCurrent, batteryVoltage, batteryChargeCurrent
+        return String.format("%s - PV: %.02f - PA: %.02f - BV: %.02f - BA: %.02f - GS: %s",
+                timestamp.atOffset(ZoneOffset.UTC).format(DateTimeFormatter.ISO_OFFSET_DATE_TIME),
+                panelVoltage, panelCurrent, batteryVoltage, batteryChargeCurrent,
+                globalStatus ? "ENABLED" : "disabled"
         );
     }
 }

@@ -30,8 +30,7 @@ public class RTCReadResponseCommand extends AbstractResponseCommand {
     @Override
     public void parseArgs(byte[] args) {
         byte[] tsArgs = Arrays.copyOfRange(args, 0, 4);
-        int unixTs = ByteUtility.bytesBEToInt32(tsArgs);
-        timestamp = Instant.ofEpochSecond(unixTs).atZone(ZoneId.of("UTC")).toLocalDateTime();
+        timestamp = ByteUtility.bytesToDateTime(tsArgs);
     }
 
     @Override

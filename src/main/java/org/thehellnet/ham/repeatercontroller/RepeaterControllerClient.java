@@ -7,12 +7,12 @@ import org.thehellnet.ham.repeatercontroller.protocol.CommandFactory;
 import org.thehellnet.ham.repeatercontroller.protocol.ConfigParam;
 import org.thehellnet.ham.repeatercontroller.protocol.request.*;
 import org.thehellnet.ham.repeatercontroller.protocol.response.*;
-import org.thehellnet.ham.repeatercontroller.socket.SocketClient;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
+import java.io.IOException;
+import java.net.*;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Arrays;
 
 public class RepeaterControllerClient {
 
@@ -22,8 +22,6 @@ public class RepeaterControllerClient {
 
     private InetAddress serverAddress = InetAddress.getLoopbackAddress();
     private int serverPort = 8888;
-
-    private SocketClient socketClient = null;
 
     public InetAddress getServerAddress() {
         return serverAddress;
@@ -43,30 +41,6 @@ public class RepeaterControllerClient {
 
     public void setServerPort(int serverPort) {
         this.serverPort = serverPort;
-    }
-
-    public void start() {
-        synchronized (SYNC) {
-            if (socketClient != null) {
-                logger.warn("Already started");
-                return;
-            }
-
-            socketClient = new SocketClient(serverAddress, serverPort);
-            socketClient.start();
-        }
-    }
-
-    public void stop() {
-        synchronized (SYNC) {
-            if (socketClient == null) {
-                logger.warn("Already stopped");
-                return;
-            }
-
-            socketClient.stop();
-            socketClient = null;
-        }
     }
 
     public PingResponseCommand ping() {
@@ -122,17 +96,51 @@ public class RepeaterControllerClient {
     }
 
     private ResponseCommand sendCommand(RequestCommand requestCommand) {
-        byte[] requestPayload = CommandFactory.serializeRequest(requestCommand);
+        logger.info("Sending request");
 
-        byte[] responsePayload;
-        synchronized (SYNC) {
-            if (socketClient == null) {
-                throw new SocketClientException("Client not started");
+        try (DatagramSocket socket = new DatagramSocket()) {
+            logger.debug("Serializing request");
+            byte[] requestPayload = CommandFactory.serializeRequest(requestCommand);
+
+            logger.debug("Creating request datagram");
+            DatagramPacket requestPacket = new DatagramPacket(requestPayload, requestPayload.length, serverAddress, serverPort);
+
+            logger.debug("Sending request datagram");
+            try {
+                socket.send(requestPacket);
+            } catch (IOException e) {
+                logger.error("Unable to send datagram: {}", e.getMessage());
+                throw new SocketClientException(e);
             }
 
-            responsePayload = socketClient.send(requestPayload);
-        }
+            logger.debug("Creating response datagram");
+            byte[] buffer = new byte[128];
+            DatagramPacket responsePacket = new DatagramPacket(buffer, buffer.length);
 
-        return CommandFactory.parseResponse(requestCommand.getCommandType(), responsePayload);
+            logger.debug("Receiving response datagram");
+            try {
+                socket.receive(responsePacket);
+            } catch (IOException e) {
+                logger.error("Error receiving packet: {}", e.getMessage());
+                throw new SocketClientException(e);
+            }
+
+            logger.debug("Checking response address and port");
+            if (!serverAddress.equals(responsePacket.getAddress()) || serverPort != responsePacket.getPort()) {
+                logger.error("Packet received from {}:{} instead of {}:{}", responsePacket.getAddress().getHostAddress(), responsePacket.getPort(), serverAddress.getHostAddress(), serverPort);
+                throw new SocketClientException();
+            }
+
+            logger.debug("Getting response payload");
+            byte[] responsePayload = Arrays.copyOfRange(responsePacket.getData(), 0, responsePacket.getLength());
+
+            logger.debug("Response: {}", responsePayload);
+
+            logger.debug("Parsing response payload");
+            return CommandFactory.parseResponse(requestCommand.getCommandType(), responsePayload);
+        } catch (SocketException e) {
+            logger.error("Unable to create socket: {}", e.getMessage());
+            throw new SocketClientException(e);
+        }
     }
 }

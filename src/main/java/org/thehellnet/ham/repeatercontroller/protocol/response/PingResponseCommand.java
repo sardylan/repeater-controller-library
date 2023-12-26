@@ -4,9 +4,7 @@ import org.thehellnet.ham.repeatercontroller.protocol.CommandType;
 import org.thehellnet.ham.repeatercontroller.protocol.ResponseType;
 import org.thehellnet.ham.repeatercontroller.utility.ByteUtility;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Objects;
@@ -26,8 +24,7 @@ public class PingResponseCommand extends AbstractResponseCommand {
     @Override
     public void parseArgs(byte[] args) {
         byte[] tsArgs = Arrays.copyOfRange(args, 0, 4);
-        int unixTs = ByteUtility.bytesBEToInt32(tsArgs);
-        timestamp = Instant.ofEpochSecond(unixTs).atZone(ZoneId.of("UTC")).toLocalDateTime();
+        timestamp = ByteUtility.bytesToDateTime(tsArgs);
     }
 
     @Override
@@ -45,6 +42,6 @@ public class PingResponseCommand extends AbstractResponseCommand {
     }
 
     public String toString() {
-        return String.format("PingResponseCommand [%s]", timestamp.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
+        return String.format("PingResponseCommand [%s]", timestamp != null ? timestamp.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME) : "null");
     }
 }

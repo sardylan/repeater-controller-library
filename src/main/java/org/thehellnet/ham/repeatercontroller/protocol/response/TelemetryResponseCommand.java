@@ -86,7 +86,7 @@ public class TelemetryResponseCommand extends AbstractResponseCommand {
     @Override
     public String toString() {
         return String.format("%s - PV: %.02f - PA: %.02f - BV: %.02f - BA: %.02f - GS: %s",
-                timestamp.atOffset(ZoneOffset.UTC).format(DateTimeFormatter.ISO_OFFSET_DATE_TIME),
+                timestamp.atOffset(ZoneOffset.UTC).format(DateTimeFormatter.ISO_DATE_TIME),
                 panelVoltage, panelCurrent, batteryVoltage, batteryChargeCurrent,
                 globalStatus ? "ENABLED" : "disabled"
         );

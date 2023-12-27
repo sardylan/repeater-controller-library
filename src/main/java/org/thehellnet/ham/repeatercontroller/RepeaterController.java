@@ -8,8 +8,9 @@ public class RepeaterController {
 
     public static void main(String[] args) throws UnknownHostException {
         RepeaterControllerClient client = new RepeaterControllerClient();
-        client.setServerAddress("qse.thehellnet.org");
+        client.setServerAddress("172.29.10.66");
 
+//        PingResponseCommand responseCommand = client.ping();
         TelemetryResponseCommand responseCommand = client.telemetry();
         System.out.println(responseCommand);
     }

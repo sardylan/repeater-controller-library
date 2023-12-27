@@ -42,6 +42,6 @@ public class PingResponseCommand extends AbstractResponseCommand {
     }
 
     public String toString() {
-        return String.format("PingResponseCommand [%s]", timestamp != null ? timestamp.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME) : "null");
+        return String.format("PingResponseCommand [%s]", timestamp != null ? timestamp.format(DateTimeFormatter.ISO_DATE_TIME) : "null");
     }
 }

@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "org.thehellnet.ham.repeatercontroller"
-version = "1.5.1"
+version = "2.0.0"
 
 repositories {
     mavenCentral()

@@ -100,8 +100,8 @@ class CommandFactoryTest {
 
     @Test
     void parseResponsePing() {
-        byte[] payload = new byte[]{ResponseType.Ack.serialize(), (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00};
-        ResponseCommand responseCommand = CommandFactory.parseResponse(CommandType.Ping, payload);
+        byte[] payload = new byte[]{CommandType.Ping.serialize(), (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00};
+        ResponseCommand responseCommand = CommandFactory.parseResponse(payload);
         assertInstanceOf(PingResponseCommand.class, responseCommand);
 
         PingResponseCommand actual = (PingResponseCommand) responseCommand;
@@ -110,22 +110,23 @@ class CommandFactoryTest {
 
     @Test
     void parseResponseReset() {
-        byte[] payload = new byte[]{ResponseType.Ack.serialize(), (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00};
-        ResponseCommand responseCommand = CommandFactory.parseResponse(CommandType.Reset, payload);
+        byte[] payload = new byte[]{CommandType.Reset.serialize()};
+        ResponseCommand responseCommand = CommandFactory.parseResponse(payload);
         assertInstanceOf(ResetResponseCommand.class, responseCommand);
     }
 
     @Test
     void parseResponseTelemetry() {
         byte[] payload = new byte[]{
-                ResponseType.Ack.serialize(),
+                CommandType.Telemetry.serialize(),
                 (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
                 (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
                 (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
                 (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
-                (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00
+                (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00,
+                (byte) 0x00
         };
-        ResponseCommand responseCommand = CommandFactory.parseResponse(CommandType.Telemetry, payload);
+        ResponseCommand responseCommand = CommandFactory.parseResponse(payload);
         assertInstanceOf(TelemetryResponseCommand.class, responseCommand);
 
         TelemetryResponseCommand expected = (TelemetryResponseCommand) responseCommand;
@@ -138,8 +139,8 @@ class CommandFactoryTest {
 
     @Test
     void parseResponseRTCRead() {
-        byte[] payload = new byte[]{ResponseType.Ack.serialize(), (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00};
-        ResponseCommand responseCommand = CommandFactory.parseResponse(CommandType.RTCRead, payload);
+        byte[] payload = new byte[]{CommandType.RTCRead.serialize(), (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00};
+        ResponseCommand responseCommand = CommandFactory.parseResponse(payload);
         assertInstanceOf(RTCReadResponseCommand.class, responseCommand);
 
         RTCReadResponseCommand actual = (RTCReadResponseCommand) responseCommand;
@@ -148,8 +149,8 @@ class CommandFactoryTest {
 
     @Test
     void parseResponseRTCSet() {
-        byte[] payload = new byte[]{ResponseType.Ack.serialize(), (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00};
-        ResponseCommand responseCommand = CommandFactory.parseResponse(CommandType.RTCSet, payload);
+        byte[] payload = new byte[]{CommandType.RTCSet.serialize(), (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00};
+        ResponseCommand responseCommand = CommandFactory.parseResponse(payload);
         assertInstanceOf(RTCSetResponseCommand.class, responseCommand);
 
         RTCSetResponseCommand actual = (RTCSetResponseCommand) responseCommand;
@@ -158,8 +159,8 @@ class CommandFactoryTest {
 
     @Test
     void parseResponseConfigRead() {
-        byte[] payload = new byte[]{ResponseType.Ack.serialize(), ConfigParam.MainVoltageOff.serialize(), (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00};
-        ResponseCommand responseCommand = CommandFactory.parseResponse(CommandType.ConfigRead, payload);
+        byte[] payload = new byte[]{CommandType.ConfigRead.serialize(), ConfigParam.MainVoltageOff.serialize(), (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00};
+        ResponseCommand responseCommand = CommandFactory.parseResponse(payload);
         assertInstanceOf(ConfigReadResponseCommand.class, responseCommand);
 
         ConfigReadResponseCommand actual = (ConfigReadResponseCommand) responseCommand;
@@ -169,8 +170,8 @@ class CommandFactoryTest {
 
     @Test
     void parseResponseConfigSet() {
-        byte[] payload = new byte[]{ResponseType.Ack.serialize(), ConfigParam.MainVoltageOn.serialize(), (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00};
-        ResponseCommand responseCommand = CommandFactory.parseResponse(CommandType.ConfigSet, payload);
+        byte[] payload = new byte[]{CommandType.ConfigSet.serialize(), ConfigParam.MainVoltageOn.serialize(), (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00};
+        ResponseCommand responseCommand = CommandFactory.parseResponse(payload);
         assertInstanceOf(ConfigSetResponseCommand.class, responseCommand);
 
         ConfigSetResponseCommand actual = (ConfigSetResponseCommand) responseCommand;
@@ -180,8 +181,8 @@ class CommandFactoryTest {
 
     @Test
     void parseResponseOutputRead() {
-        byte[] payload = new byte[]{ResponseType.Ack.serialize(), (byte) 0x00, (byte) 0x00};
-        ResponseCommand responseCommand = CommandFactory.parseResponse(CommandType.OutputRead, payload);
+        byte[] payload = new byte[]{CommandType.OutputRead.serialize(), (byte) 0x00, (byte) 0x00};
+        ResponseCommand responseCommand = CommandFactory.parseResponse(payload);
         assertInstanceOf(OutputReadResponseCommand.class, responseCommand);
 
         OutputReadResponseCommand actual = (OutputReadResponseCommand) responseCommand;
@@ -191,8 +192,8 @@ class CommandFactoryTest {
 
     @Test
     void parseResponseOutputSet() {
-        byte[] payload = new byte[]{ResponseType.Ack.serialize(), (byte) 0x00, (byte) 0x01};
-        ResponseCommand responseCommand = CommandFactory.parseResponse(CommandType.OutputSet, payload);
+        byte[] payload = new byte[]{CommandType.OutputSet.serialize(), (byte) 0x00, (byte) 0x01};
+        ResponseCommand responseCommand = CommandFactory.parseResponse(payload);
         assertInstanceOf(OutputSetResponseCommand.class, responseCommand);
 
         OutputSetResponseCommand actual = (OutputSetResponseCommand) responseCommand;

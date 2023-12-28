@@ -137,7 +137,7 @@ public class RepeaterControllerClient {
             logger.debug("Response: {}", responsePayload);
 
             logger.debug("Parsing response payload");
-            return CommandFactory.parseResponse(requestCommand.getCommandType(), responsePayload);
+            return CommandFactory.parseResponse(responsePayload);
         } catch (SocketException e) {
             logger.error("Unable to create socket: {}", e.getMessage());
             throw new SocketClientException(e);

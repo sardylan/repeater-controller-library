@@ -1,5 +1,7 @@
 package org.thehellnet.ham.repeatercontroller.protocol;
 
+import org.thehellnet.ham.repeatercontroller.exception.ProtocolException;
+
 public enum CommandType {
     Ping((byte) 'p'),
     Reset((byte) 'X'),
@@ -15,6 +17,16 @@ public enum CommandType {
 
     CommandType(byte b) {
         this.b = b;
+    }
+
+    public static CommandType parse(byte b) {
+        for (CommandType commandType : CommandType.values()) {
+            if (commandType.serialize() == b) {
+                return commandType;
+            }
+        }
+
+        throw new ProtocolException(String.format("Byte 0x%02x not recognized", b));
     }
 
     public byte serialize() {

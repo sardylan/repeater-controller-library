@@ -1,7 +1,6 @@
 package org.thehellnet.ham.repeatercontroller.protocol.response;
 
 import org.junit.jupiter.api.Test;
-import org.thehellnet.ham.repeatercontroller.protocol.ResponseType;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -11,7 +10,7 @@ class OutputSetResponseCommandTest {
     void parseArgs() {
         byte[] input = new byte[]{(byte) 0x00, (byte) 0x00};
 
-        OutputSetResponseCommand responseCommand = new OutputSetResponseCommand(ResponseType.Ack);
+        OutputSetResponseCommand responseCommand = new OutputSetResponseCommand();
         responseCommand.parseArgs(input);
 
         assertEquals(0, responseCommand.getOutputNumber());

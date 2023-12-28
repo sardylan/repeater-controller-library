@@ -3,7 +3,6 @@ package org.thehellnet.ham.repeatercontroller.protocol.response;
 import org.thehellnet.ham.repeatercontroller.exception.ProtocolException;
 import org.thehellnet.ham.repeatercontroller.protocol.CommandType;
 import org.thehellnet.ham.repeatercontroller.protocol.ConfigParam;
-import org.thehellnet.ham.repeatercontroller.protocol.ResponseType;
 import org.thehellnet.ham.repeatercontroller.utility.ByteUtility;
 
 import java.util.Arrays;
@@ -14,12 +13,12 @@ public class ConfigReadResponseCommand extends AbstractResponseCommand {
     protected ConfigParam configParam;
     protected Object value;
 
-    public ConfigReadResponseCommand(ResponseType responseType) {
-        super(CommandType.ConfigRead, responseType);
+    public ConfigReadResponseCommand() {
+        super(CommandType.ConfigRead);
     }
 
-    protected ConfigReadResponseCommand(CommandType commandType, ResponseType responseType) {
-        super(commandType, responseType);
+    protected ConfigReadResponseCommand(CommandType commandType) {
+        super(commandType);
     }
 
     public ConfigParam getConfigParam() {
@@ -43,10 +42,6 @@ public class ConfigReadResponseCommand extends AbstractResponseCommand {
     @Override
     public void parseArgs(byte[] args) {
         configParam = ConfigParam.parse(args[0]);
-
-        if (getResponseType() != ResponseType.Ack) {
-            return;
-        }
 
         switch (configParam) {
             case MainVoltageOff:

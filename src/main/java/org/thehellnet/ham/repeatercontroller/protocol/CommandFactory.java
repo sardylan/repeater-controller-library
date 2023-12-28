@@ -17,38 +17,37 @@ public class CommandFactory {
         return payload;
     }
 
-    public static ResponseCommand parseResponse(CommandType commandType, byte[] payload) {
-        ResponseType responseType = ResponseType.parse(payload[0]);
-
+    public static ResponseCommand parseResponse(byte[] payload) {
+        CommandType commandType = CommandType.parse(payload[0]);
         ResponseCommand command;
 
         switch (commandType) {
             case Ping:
-                command = new PingResponseCommand(responseType);
+                command = new PingResponseCommand();
                 break;
             case Reset:
-                command = new ResetResponseCommand(responseType);
+                command = new ResetResponseCommand();
                 break;
             case Telemetry:
-                command = new TelemetryResponseCommand(responseType);
+                command = new TelemetryResponseCommand();
                 break;
             case RTCRead:
-                command = new RTCReadResponseCommand(responseType);
+                command = new RTCReadResponseCommand();
                 break;
             case RTCSet:
-                command = new RTCSetResponseCommand(responseType);
+                command = new RTCSetResponseCommand();
                 break;
             case ConfigRead:
-                command = new ConfigReadResponseCommand(responseType);
+                command = new ConfigReadResponseCommand();
                 break;
             case ConfigSet:
-                command = new ConfigSetResponseCommand(responseType);
+                command = new ConfigSetResponseCommand();
                 break;
             case OutputRead:
-                command = new OutputReadResponseCommand(responseType);
+                command = new OutputReadResponseCommand();
                 break;
             case OutputSet:
-                command = new OutputSetResponseCommand(responseType);
+                command = new OutputSetResponseCommand();
                 break;
 
             default:

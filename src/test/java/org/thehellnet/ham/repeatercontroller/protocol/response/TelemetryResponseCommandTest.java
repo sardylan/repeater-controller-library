@@ -1,7 +1,6 @@
 package org.thehellnet.ham.repeatercontroller.protocol.response;
 
 import org.junit.jupiter.api.Test;
-import org.thehellnet.ham.repeatercontroller.protocol.ResponseType;
 
 import java.time.LocalDateTime;
 
@@ -21,7 +20,7 @@ class TelemetryResponseCommandTest {
                 (byte) 0x01
         };
 
-        TelemetryResponseCommand responseCommand = new TelemetryResponseCommand(ResponseType.Ack);
+        TelemetryResponseCommand responseCommand = new TelemetryResponseCommand();
         responseCommand.parseArgs(input);
 
         assertEquals(LocalDateTime.of(2023, 12, 16, 16, 41, 13, 0), responseCommand.getTimestamp());

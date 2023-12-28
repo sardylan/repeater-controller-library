@@ -2,9 +2,8 @@ package org.thehellnet.ham.repeatercontroller.protocol.response;
 
 import org.junit.jupiter.api.Test;
 import org.thehellnet.ham.repeatercontroller.protocol.ConfigParam;
-import org.thehellnet.ham.repeatercontroller.protocol.ResponseType;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ConfigSetResponseCommandTest {
 
@@ -15,7 +14,7 @@ class ConfigSetResponseCommandTest {
         for (ConfigParam configParam : ConfigParam.values()) {
             input[0] = configParam.serialize();
 
-            ConfigSetResponseCommand responseCommand = new ConfigSetResponseCommand(ResponseType.Ack);
+            ConfigSetResponseCommand responseCommand = new ConfigSetResponseCommand();
             responseCommand.parseArgs(input);
 
             assertEquals(configParam, responseCommand.getConfigParam());

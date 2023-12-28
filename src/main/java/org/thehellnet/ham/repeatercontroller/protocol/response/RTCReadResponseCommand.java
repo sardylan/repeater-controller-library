@@ -1,12 +1,9 @@
 package org.thehellnet.ham.repeatercontroller.protocol.response;
 
 import org.thehellnet.ham.repeatercontroller.protocol.CommandType;
-import org.thehellnet.ham.repeatercontroller.protocol.ResponseType;
 import org.thehellnet.ham.repeatercontroller.utility.ByteUtility;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Objects;
@@ -15,12 +12,12 @@ public class RTCReadResponseCommand extends AbstractResponseCommand {
 
     protected LocalDateTime timestamp;
 
-    public RTCReadResponseCommand(ResponseType responseType) {
-        super(CommandType.RTCRead, responseType);
+    public RTCReadResponseCommand() {
+        super(CommandType.RTCRead);
     }
 
-    protected RTCReadResponseCommand(CommandType commandType, ResponseType responseType) {
-        super(commandType, responseType);
+    protected RTCReadResponseCommand(CommandType commandType) {
+        super(commandType);
     }
 
     public LocalDateTime getTimestamp() {

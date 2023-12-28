@@ -1,7 +1,6 @@
 package org.thehellnet.ham.repeatercontroller.protocol.response;
 
 import org.thehellnet.ham.repeatercontroller.protocol.CommandType;
-import org.thehellnet.ham.repeatercontroller.protocol.ResponseType;
 
 import java.util.Objects;
 
@@ -10,12 +9,12 @@ public class OutputReadResponseCommand extends AbstractResponseCommand {
     protected int outputNumber;
     protected boolean status;
 
-    public OutputReadResponseCommand(ResponseType responseType) {
-        super(CommandType.OutputRead, responseType);
+    public OutputReadResponseCommand() {
+        super(CommandType.OutputRead);
     }
 
-    protected OutputReadResponseCommand(CommandType commandType, ResponseType responseType) {
-        super(commandType, responseType);
+    protected OutputReadResponseCommand(CommandType commandType) {
+        super(commandType);
     }
 
     public int getOutputNumber() {

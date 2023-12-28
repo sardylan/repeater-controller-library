@@ -1,7 +1,6 @@
 package org.thehellnet.ham.repeatercontroller.protocol.response;
 
 import org.thehellnet.ham.repeatercontroller.protocol.CommandType;
-import org.thehellnet.ham.repeatercontroller.protocol.ResponseType;
 import org.thehellnet.ham.repeatercontroller.utility.ByteUtility;
 
 import java.time.LocalDateTime;
@@ -19,8 +18,8 @@ public class TelemetryResponseCommand extends AbstractResponseCommand {
     private float batteryChargeCurrent;
     private boolean globalStatus;
 
-    public TelemetryResponseCommand(ResponseType responseType) {
-        super(CommandType.Telemetry, responseType);
+    public TelemetryResponseCommand() {
+        super(CommandType.Telemetry);
     }
 
     public LocalDateTime getTimestamp() {

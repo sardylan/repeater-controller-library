@@ -1,7 +1,6 @@
 package org.thehellnet.ham.repeatercontroller.protocol.response;
 
 import org.thehellnet.ham.repeatercontroller.protocol.CommandType;
-import org.thehellnet.ham.repeatercontroller.protocol.ResponseType;
 import org.thehellnet.ham.repeatercontroller.utility.ByteUtility;
 
 import java.time.LocalDateTime;
@@ -13,8 +12,8 @@ public class PingResponseCommand extends AbstractResponseCommand {
 
     private LocalDateTime timestamp;
 
-    public PingResponseCommand(ResponseType responseType) {
-        super(CommandType.Ping, responseType);
+    public PingResponseCommand() {
+        super(CommandType.Ping);
     }
 
     public LocalDateTime getTimestamp() {

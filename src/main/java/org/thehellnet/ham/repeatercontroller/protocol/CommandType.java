@@ -6,6 +6,8 @@ public enum CommandType {
     Ping((byte) 'p'),
     Reset((byte) 'X'),
     Telemetry((byte) 't'),
+    Meteo((byte) 'm'),
+    Status((byte) 's'),
     RTCRead((byte) 'r'),
     RTCSet((byte) 'R'),
     ConfigRead((byte) 'c'),

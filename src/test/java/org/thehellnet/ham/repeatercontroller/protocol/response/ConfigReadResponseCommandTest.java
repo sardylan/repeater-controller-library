@@ -1,7 +1,7 @@
 package org.thehellnet.ham.repeatercontroller.protocol.response;
 
 import org.junit.jupiter.api.Test;
-import org.thehellnet.ham.repeatercontroller.protocol.ConfigParam;
+import org.thehellnet.ham.repeatercontroller.protocol.enums.ConfigParam;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

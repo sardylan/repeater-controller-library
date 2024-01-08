@@ -1,4 +1,4 @@
-package org.thehellnet.ham.repeatercontroller.protocol;
+package org.thehellnet.ham.repeatercontroller.protocol.enums;
 
 import org.thehellnet.ham.repeatercontroller.exception.ProtocolException;
 

@@ -7,4 +7,9 @@ public class OutputSetResponseCommand extends OutputReadResponseCommand {
     public OutputSetResponseCommand() {
         super(CommandType.OutputSet);
     }
+
+    @Override
+    public String toString() {
+        return "OutputSetResponseCommand";
+    }
 }

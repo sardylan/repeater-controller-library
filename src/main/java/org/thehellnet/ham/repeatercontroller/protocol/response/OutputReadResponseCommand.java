@@ -44,4 +44,9 @@ public class OutputReadResponseCommand extends AbstractResponseCommand {
     public int hashCode() {
         return Objects.hash(super.hashCode(), outputNumber, status);
     }
+
+    @Override
+    public String toString() {
+        return "OutputReadResponseCommand";
+    }
 }

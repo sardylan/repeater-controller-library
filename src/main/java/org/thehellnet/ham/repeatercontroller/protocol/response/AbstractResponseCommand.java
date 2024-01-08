@@ -30,5 +30,7 @@ public abstract class AbstractResponseCommand implements Command, ResponseComman
     public int hashCode() {
         return Objects.hash(commandType);
     }
+
+    public abstract String toString();
 }
 

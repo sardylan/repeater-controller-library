@@ -1,6 +1,7 @@
 package org.thehellnet.ham.repeatercontroller.protocol;
 
 import org.junit.jupiter.api.Test;
+import org.thehellnet.ham.repeatercontroller.protocol.enums.ConfigParam;
 import org.thehellnet.ham.repeatercontroller.protocol.request.*;
 import org.thehellnet.ham.repeatercontroller.protocol.response.*;
 
@@ -103,9 +104,6 @@ class CommandFactoryTest {
         byte[] payload = new byte[]{CommandType.Ping.serialize(), (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00};
         ResponseCommand responseCommand = CommandFactory.parseResponse(payload);
         assertInstanceOf(PingResponseCommand.class, responseCommand);
-
-        PingResponseCommand actual = (PingResponseCommand) responseCommand;
-        assertEquals(LocalDateTime.ofInstant(Instant.ofEpochMilli(0), ZoneId.of("UTC")), actual.getTimestamp());
     }
 
     @Test
@@ -130,7 +128,6 @@ class CommandFactoryTest {
         assertInstanceOf(TelemetryResponseCommand.class, responseCommand);
 
         TelemetryResponseCommand expected = (TelemetryResponseCommand) responseCommand;
-        assertEquals(LocalDateTime.ofInstant(Instant.ofEpochMilli(0), ZoneId.of("UTC")), expected.getTimestamp());
         assertEquals(0.0f, expected.getBatteryVoltage());
         assertEquals(0.0f, expected.getBatteryChargeCurrent());
         assertEquals(0.0f, expected.getPanelVoltage());

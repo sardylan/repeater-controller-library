@@ -7,4 +7,9 @@ public class ConfigSetResponseCommand extends ConfigReadResponseCommand {
     public ConfigSetResponseCommand() {
         super(CommandType.ConfigSet);
     }
+
+    @Override
+    public String toString() {
+        return "ConfigSetResponseCommand";
+    }
 }

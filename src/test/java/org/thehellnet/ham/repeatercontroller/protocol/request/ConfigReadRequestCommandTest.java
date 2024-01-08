@@ -3,7 +3,7 @@ package org.thehellnet.ham.repeatercontroller.protocol.request;
 import org.junit.jupiter.api.Test;
 import org.thehellnet.ham.repeatercontroller.protocol.CommandFactory;
 import org.thehellnet.ham.repeatercontroller.protocol.CommandType;
-import org.thehellnet.ham.repeatercontroller.protocol.ConfigParam;
+import org.thehellnet.ham.repeatercontroller.protocol.enums.ConfigParam;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 

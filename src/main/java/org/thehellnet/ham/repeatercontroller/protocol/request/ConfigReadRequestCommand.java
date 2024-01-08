@@ -1,7 +1,7 @@
 package org.thehellnet.ham.repeatercontroller.protocol.request;
 
 import org.thehellnet.ham.repeatercontroller.protocol.CommandType;
-import org.thehellnet.ham.repeatercontroller.protocol.ConfigParam;
+import org.thehellnet.ham.repeatercontroller.protocol.enums.ConfigParam;
 
 import java.util.Objects;
 

@@ -2,7 +2,7 @@ package org.thehellnet.ham.repeatercontroller.protocol.response;
 
 import org.thehellnet.ham.repeatercontroller.exception.ProtocolException;
 import org.thehellnet.ham.repeatercontroller.protocol.CommandType;
-import org.thehellnet.ham.repeatercontroller.protocol.ConfigParam;
+import org.thehellnet.ham.repeatercontroller.protocol.enums.ConfigParam;
 import org.thehellnet.ham.repeatercontroller.utility.ByteUtility;
 
 import java.util.Arrays;
@@ -63,5 +63,10 @@ public class ConfigReadResponseCommand extends AbstractResponseCommand {
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), configParam, value);
+    }
+
+    @Override
+    public String toString() {
+        return "ConfigReadResponseCommand";
     }
 }

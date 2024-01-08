@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.thehellnet.ham.repeatercontroller.exception.SocketClientException;
 import org.thehellnet.ham.repeatercontroller.protocol.CommandFactory;
-import org.thehellnet.ham.repeatercontroller.protocol.ConfigParam;
+import org.thehellnet.ham.repeatercontroller.protocol.enums.ConfigParam;
 import org.thehellnet.ham.repeatercontroller.protocol.request.*;
 import org.thehellnet.ham.repeatercontroller.protocol.response.*;
 

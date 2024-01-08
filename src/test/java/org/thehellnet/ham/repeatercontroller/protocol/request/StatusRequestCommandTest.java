@@ -4,16 +4,16 @@ import org.junit.jupiter.api.Test;
 import org.thehellnet.ham.repeatercontroller.protocol.CommandFactory;
 import org.thehellnet.ham.repeatercontroller.protocol.CommandType;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
-class PingRequestCommandTest {
+public class StatusRequestCommandTest {
 
     @Test
     void serializeArgs() {
-        PingRequestCommand command = new PingRequestCommand();
+        StatusRequestCommand command = new StatusRequestCommand();
 
         byte[] expected = new byte[1];
-        expected[0] = CommandType.Ping.serialize();
+        expected[0] = CommandType.Status.serialize();
 
         byte[] actual = CommandFactory.serializeRequest(command);
         assertArrayEquals(expected, actual);

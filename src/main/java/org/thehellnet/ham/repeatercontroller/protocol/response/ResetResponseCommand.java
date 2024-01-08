@@ -10,6 +10,10 @@ public class ResetResponseCommand extends AbstractResponseCommand {
 
     @Override
     public void parseArgs(byte[] args) {
+    }
 
+    @Override
+    public String toString() {
+        return "ResetResponseCommand";
     }
 }

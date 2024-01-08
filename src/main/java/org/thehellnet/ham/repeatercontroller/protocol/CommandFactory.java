@@ -31,6 +31,12 @@ public class CommandFactory {
             case Telemetry:
                 command = new TelemetryResponseCommand();
                 break;
+            case Meteo:
+                command = new MeteoResponseCommand();
+                break;
+            case Status:
+                command = new StatusResponseCommand();
+                break;
             case RTCRead:
                 command = new RTCReadResponseCommand();
                 break;
